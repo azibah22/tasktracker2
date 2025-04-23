@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TaskTrack</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Login</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" required>
+                </div>
+                <button type="submit" class="btn primary">Login</button>
+                <p class="register-link">Don't have an account? <a href="#" id="show-register">Register</a></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="register-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Register</h2>
+            <form id="register-form">
+                <div class="form-group">
+                    <label for="register-name">Name</label>
+                    <input type="text" id="register-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-email">Email</label>
+                    <input type="email" id="register-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Password</label>
+                    <input type="password" id="register-password" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-confirm-password">Confirm Password</label>
+                    <input type="password" id="register-confirm-password" required>
+                </div>
+                <button type="submit" class="btn primary">Register</button>
+                <p class="login-link">Already have an account? <a href="#" id="show-login">Login</a></p>
+            </form>
+        </div>
+    </div>
+
+    <div class="app-container">
+        <header class="app-header">
+            <div class="logo-container">
+                <div class="logo">
+                    <img src="download.png" alt="TaskTrack Logo">
+                </div>
+                <h1>TaskTracker</h1>
+            </div>
+            <div class="user-controls">
+                <button id="new-task-btn" class="btn primary"><i class="fas fa-plus"></i> New Task</button>
+                <div class="user-avatar" id="user-avatar">👤</div>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <aside class="sidebar">
+                <nav class="menu">
+                    <ul>
+                        <li class="active"><i class="fas fa-inbox"></i> Inbox</li>
+                        <li><i class="fas fa-calendar-day"></i> Today</li>
+                        <li><i class="fas fa-calendar-week"></i> Upcoming</li>
+                        <li><i class="fas fa-users"></i> Team Tasks</li>
+                    </ul>
+                </nav>
+                <div class="projects">
+                    <h3>Projects</h3>
+                    <ul>
+                        <li><i class="fas fa-briefcase"></i> Work</li>
+                        <li><i class="fas fa-home"></i> Personal</li>
+                        <li><i class="fas fa-plus"></i> Add Project</li>
+                    </ul>
+                </div>
+            </aside>
+
+            <main class="task-board">
+                <div class="board-header">
+                    <h2>My Tasks</h2>
+                    <div class="view-options">
+                        <button class="btn" id="list-view-btn"><i class="fas fa-list"></i> List</button>
+                        <button class="btn active" id="board-view-btn"><i class="fas fa-columns"></i> Board</button>
+                    </div>
+                </div>
+
+                <div class="task-columns board-view">
+                    <div class="column" id="todo-column">
+                        <div class="column-header">
+                            <h3>To Do</h3>
+                            <span class="task-count">0</span>
+                        </div>
+                        <div class="tasks-container" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                        <button class="add-task-btn"><i class="fas fa-plus"></i> Add Task</button>
+                    </div>
+
+                    <div class="column" id="in-progress-column">
+                        <div class="column-header">
+                            <h3>In Progress</h3>
+                            <span class="task-count">0</span>
+                        </div>
+                        <div class="tasks-container" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                        <button class="add-task-btn"><i class="fas fa-plus"></i> Add Task</button>
+                    </div>
+
+                    <div class="column" id="done-column">
+                        <div class="column-header">
+                            <h3>Done</h3>
+                            <span class="task-count">0</span>
+                        </div>
+                        <div class="tasks-container" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                        <button class="add-task-btn"><i class="fas fa-plus"></i> Add Task</button>
+                    </div>
+                </div>
+
+                <div class="task-list list-view" style="display: none;">
+                    <div class="list-header">
+                        <div class="list-column">Title</div>
+                        <div class="list-column">Status</div>
+                        <div class="list-column">Due Date</div>
+                        <div class="list-column">Priority</div>
+                        <div class="list-column">Project</div>
+                    </div>
+                    <div class="list-items" id="list-items"></div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Task Modal -->
+    <div id="task-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>New Task</h2>
+            <form id="task-form">
+                <div class="form-group">
+                    <label for="task-title">Title</label>
+                    <input type="text" id="task-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="task-description">Description</label>
+                    <textarea id="task-description" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="task-due-date">Due Date</label>
+                    <input type="date" id="task-due-date">
+                </div>
+                <div class="form-group">
+                    <label for="task-priority">Priority</label>
+                    <select id="task-priority">
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="task-assignee">Assignee</label>
+                    <select id="task-assignee">
+                        <option value="me">Me</option>
+                        <option value="team-member-1">Team Member 1</option>
+                        <option value="team-member-2">Team Member 2</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="task-project">Project</label>
+                    <select id="task-project">
+                        <option value="inbox">Inbox</option>
+                        <option value="work">Work</option>
+                        <option value="personal">Personal</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn primary">Save Task</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
